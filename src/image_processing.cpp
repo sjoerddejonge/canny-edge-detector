@@ -330,6 +330,7 @@ Matrix<double> nonMaximumSuppression(const Matrix<double>& gradMag, const Matrix
 
 }
 
+// TODO: Change Matrix<double>& input to Matrix<T>?
 double getImageAverage(const Matrix<double>& input) {
     double average = 0;
     // Loop through the image to compute the sum of all elements (stored inside the double 'average'):
@@ -351,6 +352,7 @@ double getImageAverage(const Matrix<double>& input) {
  *      If a gradient pixel is between the low and high threshold, mark it as an edge pixel if it is connected
  *      to a edge pixel directly, or indirectly via other low-high pixels.
  */
+// TODO: Should return a Matrix<double> like the other functions.
 void hysteresisThresholding(Matrix<double> &gradMag, const double high_threshold, const double low_threshold){
     const int channels = gradMag.getLayers();
     const int height = gradMag.getHeight();
