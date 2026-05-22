@@ -22,7 +22,13 @@ private:
 public:
     // Class functions:
 
-    /// Construct a matrix with int width, int height and int layers and default values 0 for data.
+    /**
+     * @brief           Construct a matrix with default values 0 for data.
+     * @param width:    Width of the matrix.
+     * @param height:   Height of the matrix.
+     * @param layers:   In case of a 3D matrix, the amount of layers.
+     * @return          A Matrix.
+     */
     Matrix(int width, int height, int layers) {
         // Evaluate input; make sure size > 0:
         if (width <= 0 || height <=0 || layers <=0){
@@ -34,7 +40,12 @@ public:
         data.resize( width * height * layers, 0);
     }
 
-    /// Construct a Matrix of type T using a Matrix of type U.
+    /**
+     * @brief               Construct a Matrix of type T using a Matrix of type U.
+     * @tparam U            The type of the Matrix that is used for input.
+     * @param input_matrix  The Matrix that is used for input.
+     * @return              A Matrix<T>.
+     */
     template <typename U>
     explicit Matrix(const Matrix<U>& input_matrix) {
         width = input_matrix.getWidth();
@@ -45,8 +56,10 @@ public:
             data.begin(), [](const U& val) {return static_cast<T>(val);});
     }
 
-    /// Transform any matrix into the byte image range (0 to 255). Similar to MATLAB's mat2gray, which source code was
-    /// studied to make this function in C++.
+    //  Similar to MATLAB's mat2gray, which source code was studied to make this function in C++.
+    /**
+     * @brief Transform any matrix into the byte image range (0 to 255).
+     */
     void matrixToImage() {
         // Get the max and min value of the matrix:
         const T max = *std::max_element(std::begin(data), std::end(data));
@@ -71,11 +84,32 @@ public:
     }
 
     // Getters, these are constant:
+    /// Return the width of the matrix.
     [[nodiscard]] int getWidth() const { return width; }
+    /// Return the height of the matrix.
     [[nodiscard]] int getHeight() const { return height; }
+    /// Return the amount of layers of the matrix.
     [[nodiscard]] int getLayers() const { return layers; }
+    /// Return the entire std::vector data of the matrix.
     const std::vector<T>& getData() const { return data; } // Returns vector which contains the matrix values
-    T getData(int i) const { return data[i]; }
+    /**
+     * @brief       Return a single value of the matrix at index i.
+     * @param i     Index of the value to return.
+     * @return      Value of the matrix at index i.
+     */
+    T getData(const int i) const { return data[i]; }
+    /**
+     * @brief       Return a single value of the matrix at position x,y,(z). If the matrix has only 1 layer, the z value
+     *              does not have to be specified.
+     * @param x     The x position.
+     * @param y     The y position.
+     * @param z     The z position for matrices with more than one layer.
+     * @return      Value of the matrix at position (x,y,z).
+     */
+    // T getData(const int x, const int y, const int z = 0) const {
+    //     // TODO: Add bounds check?
+    //     return data[layers*(y * width + x) + z];
+    // }
 
     // Setters:
     /// Change the private integer 'width' of the matrix and resize matrix accordingly.
